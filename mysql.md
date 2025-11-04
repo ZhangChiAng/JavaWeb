@@ -72,9 +72,9 @@ drop database [if exist] 数据库名;
 ```sql
 -- 创建表
 create table tablename (
-    字段1 字段类型 [约束] [comment 字段1 注释],
+    字段1 字段类型 [约束] [comment 字段1注释],
     ......
-    字段n 字段类型 [约束] [comment 字段n 注释]
+    字段n 字段类型 [约束] [comment 字段n注释]
 ) [comment 表注释];
 ```
 
@@ -85,3 +85,108 @@ create table tablename (
 | 主键约束 |   主键是一行数据的唯一标识，要求非空且唯一   | primary key (auto\_increment) |
 | 默认约束 |  保存数据时，如果未制定该字段值，则采用默认值  |            default            |
 | 外键约束 | 让两张表的数据建立连接，保证数据的一致性和完整性 |          foreign key          |
+
+```sql
+show tables;    -- 查询当前数据库的所有表
+desc 表名; -- 查询表结构
+show create table 表名; -- 查询建表语句
+
+alter table 表名 add 字段名 类型(长度) [coment 注释] [约束]; -- 添加字段
+alter table 表名 modify 字段名 新数据类型(长度); -- 修改字段类型
+alter table 表名 change 旧字段名 新字段名 类型(长度) [comment 注释] [约束]; -- 修改字段名与字段类型
+alter table 表名 drop column 字段名; -- 删除字段
+alter table 表名 rename to 新表名; -- 修改表名
+
+drop table [if exists] 表名; -- 删除表
+```
+
+### DML
+
+#### DML-insert
+
+```sql
+-- 指定字段添加数据
+insert into 表名(字段名1, 字段名2) values (值1, 值2);
+
+-- 全部字段添加数据
+insert into 表名 values (值1, 值2, ...);
+
+-- 批量添加数据（指定字段）
+insert into 表名 (字段名1, 字段名2) values (值1, 值2), (值1, 值2);
+
+-- 批量添加数据（全部字段）
+insert into 表名 values (值1, 值2, ...), (值1, 值2, ...);
+```
+
+#### DML-update
+
+```sql
+-- 修改数据
+update 表名 set 字段名1 = 值1, 字段名2 = 值2, .... [where 条件];
+-- 如果没有条件，则会修改整张表的所有数据
+```
+
+#### DML-delete
+
+```sql
+-- 删除数据
+delete from 表名 [where 条件];
+-- 如果没有条件，则会删除整张表的所有数据
+-- 不能删除某一个字段的值，可以使用update将该字段的值设为NULL
+```
+
+### DQL
+
+```sql
+-- 基本查询
+select
+    字段列表
+from 
+    表名列表
+
+-- 条件查询
+where
+    条件列表
+
+-- 分组查询
+group by
+    分组字段列表
+having
+    分组后条件列表
+
+-- 排序查询
+order by
+    排序字段列表
+
+-- 分页查询
+limit
+    分页参数
+```
+
+#### DQL-基本查询
+
+```sql
+-- 查询多个字段
+select 字段1, 字段2, 字段3 from 表名;
+
+-- 查询所有字段（通配符）
+select * from 表名;
+
+-- 为查询字段设置别名，as关键字可以省略
+select 字段1 [as 别名1], 字段2 [as 别名2] from 表名;
+
+-- 去除重复记录
+select distinct 字段列表 from 表名;
+```
+
+#### DQL-条件查询
+
+```sql
+select 字段列表 from 表名 where 条件列表;
+```
+
+| 比较运算符               | 功能                      |
+| ------------------- | ----------------------- |
+| between ... and ... | 在某个范围之内（含最小、最大值）        |
+| in(...)             | 在in之后的列表中的值，多选一         |
+| like 占位符            | 模糊匹配（\_匹配单个字符，%匹配任意个字符） |
