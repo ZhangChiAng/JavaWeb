@@ -190,3 +190,39 @@ select 字段列表 from 表名 where 条件列表;
 | between ... and ... | 在某个范围之内（含最小、最大值）        |
 | in(...)             | 在in之后的列表中的值，多选一         |
 | like 占位符            | 模糊匹配（\_匹配单个字符，%匹配任意个字符） |
+
+#### DQL-分组查询
+
+```sql
+select 字段列表 from 表名 [where 条件列表] group by 分组字段名 [having 分组后过滤条件];
+```
+
+* where 与 having 的区别：
+  1. 执行时机不同：where 是分组之前进行过滤，不满足 where 条件，不参与分组，而 having 是分组之后对结果进行过滤。
+  2. 判断条件不同：where 不能对聚合函数进行判断，而 having 可以。
+* 注意：
+  1. 分组之后，查询的字段一般为聚合函数和分组字段，查询其他字段无任何意义。
+  2. 执行顺序：where > 聚合函数 > having 。
+
+#### DQL-排序查询
+
+{% code fullWidth="false" %}
+```sql
+select 字段 from 表名 [where 条件] [group by 分组字段 having 过滤条件]
+    order by 排序字段 排序方式;
+```
+{% endcode %}
+
+* 排序方式：升序（asc），降序（desc）；默认为升序。
+
+#### DQL-分页查询
+
+```sql
+select 字段 from 表名 [where 条件] [group by 分组字段 having 过滤条件] [order by 排序字段]
+    limit 起始索引, 查询记录数 ;
+```
+
+* 说明：
+  1. 起始索引从0开始。
+  2. 分页查询是数据库的方言，不同的数据库有不同的实现，MySQL中是LIMIT。
+  3. 如果起始索引为0，起始索引可以省略，直接简写为 limit 10 。
